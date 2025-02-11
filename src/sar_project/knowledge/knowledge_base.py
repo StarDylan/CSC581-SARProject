@@ -8,6 +8,9 @@ class KnowledgeBase:
         self.weather_data = {}
         self.resource_status = {}
         self.mission_history = []
+        self.clues = {}
+        self.clue_tags = {}
+        self.query_queue = []
 
     def update_terrain(self, location, data):
         """
@@ -92,3 +95,47 @@ class KnowledgeBase:
             list: A list of logged mission events.
         """
         return self.mission_history
+
+    def get_clues(self):
+        """
+        Retrieves the list of available clues.
+
+        Returns:
+            list: A list of available clues.
+        """
+        return self.clues
+
+    def get_clue(self, id: int):
+        """
+        Retrieves a specific clue by its ID.
+
+        Args:
+            id (int): The ID of the clue to retrieve.
+
+        Returns:
+            str: The text of the clue or an empty string if not found.
+        """
+        return self.clues.get(id, "")
+    
+    def add_clue_tag(self, id: int, tag: str):
+        if tag not in self.clue_tags:
+            self.clue_tags[tag] = []
+        self.clue_tags[tag].append(id)
+
+    def add_clue(self, id: int, clue: str):
+        """
+        Adds a new clue to the knowledge base.
+
+        Args:
+            clue (str): Text describing the clue.
+        """
+        self.clues[id] = clue
+    
+    def add_query(self, query: str):
+        """
+        Adds a new query to the query queue.
+
+        Args:
+            query (str): The query to be added.
+        """
+        self.query_queue.append(query)

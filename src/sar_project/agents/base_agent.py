@@ -1,6 +1,6 @@
 from autogen import AssistantAgent
 from abc import ABC, abstractmethod
-from knowledge import KnowledgeBase 
+from sar_project.knowledge import KnowledgeBase 
 
 class SARBaseAgent(AssistantAgent):
     def __init__(self, name, role, system_message, knowledge_base: KnowledgeBase):

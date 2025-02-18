@@ -1,9 +1,12 @@
 from sar_project.agents.base_agent import SARBaseAgent
+from sar_project.knowledge.knowledge_base import KnowledgeBase
+
 class WeatherAgent(SARBaseAgent):
     def __init__(self, name="weather_specialist"):
         super().__init__(
             name=name,
             role="Weather Specialist",
+            knowledge_base=KnowledgeBase(),
             system_message="""You are a weather specialist for SAR operations. Your role is to:
             1. Analyze weather conditions
             2. Predict weather impacts on operations

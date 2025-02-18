@@ -1,5 +1,5 @@
 from typing import TypedDict
-from knowledge import KnowledgeBase
+from sar_project.knowledge.knowledge_base import KnowledgeBase
 
 class ClueMessage(TypedDict):
     flag_clue: int
@@ -28,6 +28,9 @@ class ClueMeisterAgent(SARBaseAgent):
         try:
             # Example processing logic
             if "flag_clue" in message:
+                assert "flag_clue" in message
+                assert isinstance(message["flag_clue"], int)
+
                 self.kb.add_clue_tag(message["flag_clue"], "ai_flagged")
                 return {"clue_id": message["flag_clue"]}
 
@@ -54,7 +57,10 @@ class ClueMeisterAgent(SARBaseAgent):
         text = "Clues:\n"
 
         for (id, clue) in clues.items():
-            text += f"Clue ID #{id}: {clue}\n\n"
+            if id in self.kb.clue_tags.get("ai_flagged", []):
+                text += f"Clue ID #{id}: {clue} (Already Flagged)\n\n"
+            else:
+                text += f"Clue ID #{id}: {clue}\n\n"
 
         return {"clue_text": text}
 

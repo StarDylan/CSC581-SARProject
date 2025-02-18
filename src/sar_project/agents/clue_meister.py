@@ -24,7 +24,21 @@ class ClueMeisterAgent(SARBaseAgent):
 
     
     def process_request(self, message: ClueMessage):
-        """Process clue-related requests"""
+        """Process clue-related requests
+
+        Input:
+        - message: dict containing one of the following keys:
+            - flag_clue: int
+            - get_clues: bool
+            - get_status: bool
+            - ask_human_query: str
+        
+        Output (All Optional):
+        - clue_id: int
+        - clue_text: str
+        - response: str
+        - error: str
+        """
         try:
             # Example processing logic
             if "flag_clue" in message:

@@ -1,104 +1,72 @@
-# Search and Rescue (SAR) Agent Framework - CSC 581
+## Submission
 
-## Introduction
+### Selected Task: Clue Meister
 
-This framework is for CSC 581 students to develop intelligent agents supporting the AI4S&R project. Students can create specialized agents for various SAR roles such as those listed in this spreadsheet:
+ClueMeister              [[2025-01-30 ClueMeister Agent]]	
 
-https://docs.google.com/spreadsheets/d/1QZK5HAdDC-_XNui6S0JZTbJH5_PbYJTp8_gyhXmz8Ek/edit?usp=sharing
-https://docs.google.com/spreadsheets/d/11rBV9CbKNeQbWbaks8TF6GO7WcSUDS_-hAoH75UEkgQ/edit?usp=sharing
+Clue prioritization, pattern recognition, inquiry initiation
 
-Each student or team will choose a specific role within the SAR ecosystem and implement an agent that provides decision support and automation for that role.
+Analyze and prioritize clues for investigation
 
-## How to Submit
-Please submit a link to your clone of the repository to Canvas.
+Sort clues by criteria, identify patterns in clue sets, initiate further inquiries
 
-## Prerequisites
+Number of prioritized clues leading to actionable insights; Accuracy of pattern recognition in clue sets
 
-- Python 3.8 or higher
-- pyenv (recommended for Python version management)
-- pip (for dependency management)
+Intelligence/Investigations Section, Field reports from search teams or drones capturing environmental clues
 
-## Setup and Installation
+Operations Section Chief, MissingPersonProfiler	Subjectivity in interpretation, data quality
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd sar-project
+MissingPersonProfiler, PathExplorer	Natural language processing, clue management tools
+
+Crucial for directing search efforts efficiently
+
+
+### Output (Simulated Fake Data Scenario):
+
+Set Status to Active
+```
+{'status': 'updated', 'new_status': 'active'}
 ```
 
-2. Set up Python environment:
-```bash
-# Using pyenv (recommended)
-pyenv install 3.8.0  # or your preferred version
-pyenv local 3.8.0
-
-# Create and activate virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Unix/macOS
-# or
-.venv\Scripts\activate     # On Windows
+List Clues
+```
+{'clue_text': 
+    'Clues:
+      Clue ID #1: Test clue 1
+      Clue ID #2: Test clue 2
+      Clue ID #3: Missing person last seen at the park
+      Clue ID #4: Missing Person has a tattoo on their left arm
+      Clue ID #5: Missing Person loves to hide under slides in the park
+    '}
 ```
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
+Flag Clue 3
+```
+{'clue_id': 3}
 ```
 
-4. Configure environment variables:
-- Obtain required API keys:
-  1. OpenAI API key: Sign up at https://platform.openai.com/signup
-- Update your `.env` file with the following:
-    ```
-    OPENAI_API_KEY=your_openai_api_key_here
-    ```
-- Make sure to keep your `.env` file private and never commit it to version control.
 
-## Project Structure
-
+Flag Clue 5
 ```
-sar-project/
-├── src/
-│   └── sar_project/         # Main package directory
-│       └── agents/          # Agent implementations
-│       └── config/          # Configuration and settings
-│       └── knowledge/       # Knowledge base implementations
-├── tests/                   # Test directory
-├── pyproject.toml           # Project metadata and build configuration
-├── requirements.txt         # Project dependencies
-└── .env                     # Environment configuration
+{'clue_id': 5}
 ```
 
-## Development
+Add query "Search the park for the missing person, check under the slides (see clues 3 + 5)"
+```
+{'response': 'Added Query'}
+```
 
-This project follows modern Python development practices:
+List clues again (show flagged output)
+```
+{'clue_text': 'Clues:
+    Clue ID #1: Test clue 1
 
-1. Source code is organized in the `src/sar_project` layout
-2. Use `pip install -e .` for development installation
-3. Run tests with `pytest tests/`
-4. Follow the existing code style and structure
-5. Make sure to update requirements.txt when adding dependencies
+    Clue ID #2: Test clue 2
 
+    Clue ID #3: Missing person last seen at the park (Already Flagged)
 
-## FAQ
+    Clue ID #4: Missing Person has a tattoo on their left arm
 
-### Assignment Questions
-
-**Q: How do I choose a role for my agent?**
-A: Review the list of SAR roles above and consider which aspects interest you most. Your agent should provide clear value to SAR operations through automation, decision support, or information processing.
-
-**Q: What capabilities should my agent have?**
-A: Your agent should handle tasks relevant to its role such as: data processing, decision making, communication with other agents, and providing actionable information to human operators.
-
-**Q: Can I add new dependencies?**
-A: Yes, you can add new Python packages to requirements.txt as needed for your implementation.
-
-### Technical Questions
-
-**Q: Why am I getting API key errors?**
-A: Ensure you've properly set up your .env file and obtained valid API keys from the services listed above.
-
-**Q: How do I test my agent?**
-A: Use the provided test framework in the tests/ directory. Write tests that verify your agent's core functionality.
-
-**Q: Can I use external libraries for my agent?**
-A: Yes, you can use external libraries as long as they are compatible.
+    Clue ID #5: Missing Person loves to hide under slides in the park (Already Flagged)
+'}
+```

@@ -1,5 +1,14 @@
 from typing import TypedDict
 from sar_project.knowledge.knowledge_base import KnowledgeBase
+import os
+import google.generativeai as genai
+import dotenv
+
+
+from sar_project.agents.base_agent import SARBaseAgent
+
+dotenv.load_dotenv()
+genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
 class ClueMessage(TypedDict):
     flag_clue: int
@@ -62,7 +71,59 @@ class ClueMeisterAgent(SARBaseAgent):
                 return {"error": "Unknown request type"}
         except Exception as e:
             return {"error": str(e)}
+    
+    def extract_clue(self, raw_text: str):
+        """Extract clue from text"""
         
+        prompt = f"""You are a clue meister for SAR operations. Your role is to extract clues from the text below.
+        
+        Please surround your proposed clue with the tags <clue> and </clue>.
+        
+        {raw_text}"""
+
+        response = genai.text_generation(prompt)
+
+        after_first_tag = response.split("<clue>")[1]
+        before_second_tag = after_first_tag.split("</clue>")[0]
+
+        return {"clue_text": before_second_tag}
+    
+
+    def flag_clues(self):
+        
+        clues = self.clues_to_text()
+
+        clue_text = clues["clue_text"]
+
+        prompt = f"""You are a clue meister for SAR operations. 
+        
+        Your role is to flag any clues that might be related to each other and require further investigation.
+
+        You can flag a clue by providing the clue ID surrounded by exclaimation marks.
+
+        For example: Clue !1! and !2! are related.
+
+        {clue_text}"""
+
+        response = genai.text_generation(prompt)
+
+        if "!" not in response:
+            return {"info": "Found nothing"}
+        
+    
+
+        import re
+        print(response)
+        matches = re.findall(r"!(\d+)!", response)
+
+        print(matches)
+        for match in matches:
+            self.kb.add_clue_tag(int(match), "ai_flagged")
+
+
+
+        return {"info": f"Flagged {len(matches)} Clues"}
+
     
     def clues_to_text(self):
         """Convert clues to text"""

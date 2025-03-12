@@ -1,4 +1,18 @@
-## Submission
+# Submission
+
+## Revision
+
+### Insights
+
+- Current implementation was a bit simple. We need to integrate an LLM to actually extract clues.
+
+- There were also some feedback related to the documentation, which has been updated.
+
+- Lastly, there was a suggestion for grouping clues for different cases (this is important for future development, but not necessary for this proof of concept).
+
+### Modificatitons
+
+- 
 
 ### Selected Task: Clue Meister
 
@@ -70,3 +84,46 @@ List clues again (show flagged output)
     Clue ID #5: Missing Person loves to hide under slides in the park (Already Flagged)
 '}
 ```
+
+## Setup
+
+
+## Prerequisites
+
+- Python 3.8 or higher
+- pyenv (recommended for Python version management)
+- pip (for dependency management)
+
+## Setup and Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd sar-project
+```
+
+2. Set up Python environment:
+```bash
+# Using pyenv (optional)
+pyenv install 3.9.6  # or your preferred version
+pyenv local 3.9.6
+
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Unix/macOS
+# or
+.venv\Scripts\activate     # On Windows
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+pip install -e .
+```
+
+4. Configure environment variables:
+
+#### Google Gemini:
+- add `GOOGLE_API_KEY` to `.env` file
+
+Make sure to keep your `.env` file private and never commit it to version control.

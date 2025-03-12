@@ -138,6 +138,6 @@ pip install -e .
 4. Configure environment variables:
 
 #### Google Gemini:
-- add `GOOGLE_API_KEY` to `.env` file
+- add `GOOGLE_API_KEY` and `OPENAI_API_KEY` to `.env` file
 
 Make sure to keep your `.env` file private and never commit it to version control.

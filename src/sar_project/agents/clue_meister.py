@@ -31,6 +31,8 @@ class ClueMeisterAgent(SARBaseAgent):
             knowledge_base=kb
         )
 
+        self.model = genai.GenerativeModel('gemini-1.5-flash')
+
     
     def process_request(self, message: ClueMessage):
         """Process clue-related requests
@@ -74,19 +76,41 @@ class ClueMeisterAgent(SARBaseAgent):
     
     def extract_clue(self, raw_text: str):
         """Extract clue from text"""
-        
-        prompt = f"""You are a clue meister for SAR operations. Your role is to extract clues from the text below.
-        
-        Please surround your proposed clue with the tags <clue> and </clue>.
-        
-        {raw_text}"""
 
-        response = genai.text_generation(prompt)
+        clues_found = []
+        
+        while True:
+            prompt = f"""You are a clue meister for SAR operations. Your role is to extract a clue from the text below.
 
-        after_first_tag = response.split("<clue>")[1]
-        before_second_tag = after_first_tag.split("</clue>")[0]
+Please report clues on a new line starting with 'Clue:'. If you cannot find any clues, please type 'No New Clues'.
 
-        return {"clue_text": before_second_tag}
+For example:
+Clue: The person was wearing a red hat.
+Clue: The person was seen running towards the park.
+
+## Raw Text to extract clues from
+{raw_text}
+
+## Clues Already Found
+{clues_found}"""
+
+            import time
+            time.sleep(1)
+
+            response = self.model.generate_content(prompt)
+            response = response.text
+            if "Clue:" not in response:
+                for clue in clues_found:
+                    self.kb.add_clue(clue)
+                return {"clues": clues_found}
+
+            for line in response.split("\n"):
+                if "Clue:" in line:
+                    clues_found.append(line.replace("Clue:", "").strip())
+
+
+
+        
     
 
     def flag_clues(self):
@@ -96,21 +120,19 @@ class ClueMeisterAgent(SARBaseAgent):
         clue_text = clues["clue_text"]
 
         prompt = f"""You are a clue meister for SAR operations. 
-        
-        Your role is to flag any clues that might be related to each other and require further investigation.
 
-        You can flag a clue by providing the clue ID surrounded by exclaimation marks.
+Your role is to flag any clues that might be related to each other and require further investigation.
 
-        For example: Clue !1! and !2! are related.
+You can flag a clue by providing the clue ID surrounded by exclaimation marks.
 
+For example: Clue !1! and !2! are related.
         {clue_text}"""
 
-        response = genai.text_generation(prompt)
+        response = self.model.generate_content(prompt)
+        response = response.text
 
         if "!" not in response:
             return {"info": "Found nothing"}
-        
-    
 
         import re
         print(response)

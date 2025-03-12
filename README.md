@@ -12,7 +12,20 @@
 
 ### Modificatitons
 
-- 
+- Implemented an LLM clue extractor which can be used to extract clues from forms or interviews.
+- Updated the documentation to include the new feature.
+
+
+#### Clue Extracting and Flagging
+
+The base clue is: "A person was lost while hiking. He was last seen at the base of a mountain. He hates high elevation"
+
+The LLM extracts the following clues:
+`['The lost person was last seen at the base of a mountain.', 'The lost person hates high elevation.']`
+
+The LLM then flagged these 2 clues as they are related and should be investigated.
+
+This uses the Clue DB in the previous implementation.
 
 ### Selected Task: Clue Meister
 
@@ -35,7 +48,8 @@ MissingPersonProfiler, PathExplorer	Natural language processing, clue management
 Crucial for directing search efforts efficiently
 
 
-### Output (Simulated Fake Data Scenario):
+
+### Basic Clue DB Usage (Simulated Fake Data Scenario):
 
 Set Status to Active
 ```

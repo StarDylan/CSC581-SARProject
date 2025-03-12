@@ -122,14 +122,16 @@ class KnowledgeBase:
             self.clue_tags[tag] = []
         self.clue_tags[tag].append(id)
 
-    def add_clue(self, id: int, clue: str):
+    def add_clue(self, clue: str):
         """
         Adds a new clue to the knowledge base.
 
         Args:
             clue (str): Text describing the clue.
         """
-        self.clues[id] = clue
+
+        new_id = max(self.clues.keys(), default=0) + 1
+        self.clues[new_id] = clue
     
     def add_query(self, query: str):
         """
